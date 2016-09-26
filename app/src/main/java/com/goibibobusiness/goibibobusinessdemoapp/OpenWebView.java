@@ -1,11 +1,13 @@
 package com.goibibobusiness.goibibobusinessdemoapp;
 
 import android.content.Context;
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.webkit.JavascriptInterface;
+import android.webkit.JsResult;
 import android.webkit.WebChromeClient;
 import android.webkit.WebSettings;
 import android.webkit.WebView;
@@ -29,7 +31,7 @@ public class OpenWebView extends AppCompatActivity {
 
         myWebView = (WebView) findViewById(R.id.webview);
         myWebView.setWebViewClient(new WebViewClient());
-        myWebView.setWebChromeClient(new WebChromeClient());
+        myWebView.setWebChromeClient(new MyWebChromeClient());
 
         // Enabling Javascript
         WebSettings myWebSettings = myWebView.getSettings();
@@ -83,6 +85,27 @@ public class OpenWebView extends AppCompatActivity {
             builder.setMessage(message);
             AlertDialog dialog = builder.create();
             dialog.show();
+        }
+    }
+
+    // Private class to handle JS alert windows
+    // To edit the default title text which comes with an alert
+    private class MyWebChromeClient extends android.webkit.WebChromeClient {
+
+        @Override
+        public boolean onJsAlert(WebView view, String url, String message, final JsResult result) {
+            AlertDialog dialog = new AlertDialog.Builder(view.getContext()).
+                    setTitle("Goibibo").
+                    setMessage(message).
+                    setPositiveButton("OK", new DialogInterface.OnClickListener() {
+                        @Override
+                        public void onClick(DialogInterface dialog, int which) {
+                            //do nothing
+                        }
+                    }).create();
+            dialog.show();
+            result.confirm();
+            return true;
         }
     }
 }
