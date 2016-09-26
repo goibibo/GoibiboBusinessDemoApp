@@ -21,6 +21,7 @@ public class OpenWebView extends AppCompatActivity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+        setTitle("DemoApp WebView");
         setContentView(R.layout.activity_open_web_view);
 
         Intent intent = getIntent();
