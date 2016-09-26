@@ -17,7 +17,8 @@
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
-        <activity android:name=".OpenWebView"></activity>
+        <activity android:name=".OpenWebView" />
+        <activity android:name=".LoginParams"></activity>
     </application>
 
 </manifest>
