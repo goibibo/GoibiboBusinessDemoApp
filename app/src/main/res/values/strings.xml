@@ -1,3 +1,16 @@
 <resources>
     <string name="app_name">Goibibo Business DemoApp</string>
+    <string-array name="url_endpoints">
+        <item>start_login</item>
+        <item>start</item>
+    </string-array>
+    <string-array name="api_version">
+        <item>1.0</item>
+        <item>0</item>
+    </string-array>
+    <string-array name="vertical">
+        <item>flight</item>
+        <item>hotels</item>
+        <item>bus</item>
+    </string-array>
 </resources>

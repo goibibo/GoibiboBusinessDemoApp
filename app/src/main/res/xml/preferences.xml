@@ -4,7 +4,100 @@
     <CheckBoxPreference
         android:key="target_testing_env"
         android:title="Target testing environment"
-        android:summary="Generate link against PP system"
         android:defaultValue="true"/>
+
+    <EditTextPreference
+        android:key="partner_id"
+        android:title="B2B Partner ID"
+        android:summary="partner id"
+        android:dialogMessage="Please enter B2B partner_id"
+        android:defaultValue="example_bank"/>
+
+    <ListPreference
+        android:key="target_endpoint"
+        android:title="URL End-Point"
+        android:summary="%s"
+        android:entries="@array/url_endpoints"
+        android:entryValues="@array/url_endpoints"
+        android:defaultValue="start_login"/>
+
+    <EditTextPreference
+        android:key="user_id"
+        android:title="End-user ID"
+        android:summary="enduser id"
+        android:dialogMessage="Please enter B2B partner_id"
+        android:defaultValue="user345"/>
+
+    <EditTextPreference
+        android:key="time_stamp"
+        android:title="Time-stamp"
+        android:summary="YYYY-MM-DD HH:MM"
+        android:dialogMessage="NOTE: This auto-updates when login-params settings are opened"
+        android:defaultValue="YYYY-MM-DD HH:MM"/>
+
+    <EditTextPreference
+        android:key="token"
+        android:title="Token"
+        android:summary="0000000"
+        android:dialogMessage="NOTE: 0000000 is reserved for internal goibibo testing"
+        android:defaultValue="0000000"/>
+
+    <EditTextPreference
+        android:key="checksum_key"
+        android:title="Checksum Key"
+        android:summary="testkey"
+        android:dialogMessage=""
+        android:defaultValue="testkey"/>
+
+    <ListPreference
+        android:key="api_version"
+        android:title="Version"
+        android:summary="%s"
+        android:entries="@array/api_version"
+        android:entryValues="@array/api_version"
+        android:defaultValue="1.0"/>
+
+    <ListPreference
+        android:key="vertical"
+        android:title="Vertical"
+        android:summary="%s"
+        android:entries="@array/vertical"
+        android:entryValues="@array/vertical"
+        android:defaultValue="flight"/>
+
+    <PreferenceCategory
+        android:title="Personal Details">
+
+        <EditTextPreference
+            android:key="f_name"
+            android:title="First Name"
+            android:summary="Sherlock"
+            android:defaultValue="Sherlock"/>
+
+        <EditTextPreference
+            android:key="m_name"
+            android:title="Middle Name"
+            android:summary=""
+            android:defaultValue=""/>
+
+        <EditTextPreference
+            android:key="l_name"
+            android:title="Last Name"
+            android:summary="Holmes"
+            android:defaultValue="Holmes"/>
+
+        <EditTextPreference
+            android:key="mobile"
+            android:title="Mobile"
+            android:summary="8877743215"
+            android:defaultValue="8877743215"/>
+
+        <EditTextPreference
+            android:key="email"
+            android:title="E-mail"
+            android:summary="sherlock@guerrillamail.com"
+            android:defaultValue="sherlock@guerrillamail.com"/>
+
+    </PreferenceCategory>
 
 </PreferenceScreen>
