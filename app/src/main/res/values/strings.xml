@@ -1,5 +1,5 @@
 <resources>
-    <string name="app_name">Goibibo Business DemoApp</string>
+    <string name="app_name">GoWebView</string>
     <string-array name="url_endpoints">
         <item>start_login</item>
         <item>start</item>
