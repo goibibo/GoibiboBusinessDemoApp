@@ -1,6 +1,17 @@
 <?xml version="1.0" encoding="utf-8"?>
 <PreferenceScreen xmlns:android="http://schemas.android.com/apk/res/android">
 
+    <PreferenceCategory
+        android:title="URL Auto complete">
+
+        <CheckBoxPreference
+            android:key="url_autocomplete"
+            android:title="Auto-fill URL on main screen"
+            android:summary="Enable this feature to try out below options"
+            android:defaultValue="false"/>
+
+    </PreferenceCategory>
+
     <CheckBoxPreference
         android:key="target_testing_env"
         android:title="Target testing environment"

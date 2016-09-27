@@ -50,6 +50,7 @@ public class MainActivity extends AppCompatActivity {
     public void updateLoginURL() {
         SharedPreferences sharedPref = PreferenceManager.getDefaultSharedPreferences(this);
         Boolean target_testing = sharedPref.getBoolean("target_testing_env", true);
+        Boolean url_autofill = sharedPref.getBoolean("url_autocomplete", false);
         String url_endpoint = sharedPref.getString("target_endpoint", "start_login");
         String partner_id = sharedPref.getString("partner_id", "example_bank");
         String userid = sharedPref.getString("user_id", "user345");
@@ -103,7 +104,10 @@ public class MainActivity extends AppCompatActivity {
 
         String url_string = buildUri.toString();
 
-        editText.setText(url_string);
+        if (url_autofill == true) {
+            editText.setText(url_string);
+        }
+
     }
 
 }
