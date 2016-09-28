@@ -66,7 +66,7 @@ author = 'AbrahamV'
 # built documents.
 #
 # The short X.Y version.
-version = '0.1.0'
+version = '1.0'
 # The full version, including alpha/beta/rc tags.
 release = version
 
@@ -202,7 +202,7 @@ html_static_path = ['_static']
 
 # If false, no index is generated.
 #
-# html_use_index = True
+html_use_index = False
 
 # If true, the index is split into individual pages for each letter.
 #
