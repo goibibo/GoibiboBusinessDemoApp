@@ -1,0 +1,222 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+  "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+
+
+<html xmlns="http://www.w3.org/1999/xhtml">
+  <head>
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+    
+    <title>Initial Login &#8212; GoibiboBusiness WebView Integration 0.1.0 documentation</title>
+    
+    <link rel="stylesheet" href="_static/nature.css" type="text/css" />
+    <link rel="stylesheet" href="_static/pygments.css" type="text/css" />
+    
+    <script type="text/javascript">
+      var DOCUMENTATION_OPTIONS = {
+        URL_ROOT:    './',
+        VERSION:     '0.1.0',
+        COLLAPSE_INDEX: false,
+        FILE_SUFFIX: '.html',
+        HAS_SOURCE:  true
+      };
+    </script>
+    <script type="text/javascript" src="_static/jquery.js"></script>
+    <script type="text/javascript" src="_static/underscore.js"></script>
+    <script type="text/javascript" src="_static/doctools.js"></script>
+    <link rel="top" title="GoibiboBusiness WebView Integration 0.1.0 documentation" href="index.html" />
+    <link rel="prev" title="GoibiboBusiness WebView Integration documentation" href="index.html" /> 
+  </head>
+  <body role="document">
+    <div class="related" role="navigation" aria-label="related navigation">
+      <h3>Navigation</h3>
+      <ul>
+        <li class="right" style="margin-right: 10px">
+          <a href="genindex.html" title="General Index"
+             accesskey="I">index</a></li>
+        <li class="right" >
+          <a href="index.html" title="GoibiboBusiness WebView Integration documentation"
+             accesskey="P">previous</a> |</li>
+        <li class="nav-item nav-item-0"><a href="index.html">GoibiboBusiness WebView Integration 0.1.0 documentation</a> &#187;</li> 
+      </ul>
+    </div>  
+
+    <div class="document">
+      <div class="documentwrapper">
+        <div class="bodywrapper">
+          <div class="body" role="main">
+            
+  <div class="section" id="initial-login">
+<h1>Initial Login<a class="headerlink" href="#initial-login" title="Permalink to this headline">¶</a></h1>
+<p>From an end-user&#8217;s point-of-view, when they select the travel option on the
+B2B partner&#8217;s mobile-app they should be taken to a screen which shows
+potential inventory they can purchase (inventory can be a flight booking,
+hotel reservation, bus ticket ... etc).</p>
+<p>In the background, the B2B Partner will pass user details to Goibibo. We will
+then register the user on our platform and show them different travel
+inventory. This will be initiated from the mobile app by opening a WebView and
+calling a login API. After the user is successfully logged-in, the API will
+return HTML which gets rendered within the WebView.</p>
+<p>Goibibo offers multiple login APIs for partners to use. Details about them are
+as follows,</p>
+<div class="admonition note">
+<p class="first admonition-title">Note</p>
+<p class="last">Please use <code class="docutils literal"><span class="pre">pp.goibibobusiness.com</span></code> for development/testing purposes and
+<code class="docutils literal"><span class="pre">www.goibibobusiness.com</span></code> in the production environment.</p>
+</div>
+<div class="section" id="send-all-user-details-to-goibibo">
+<h2>Send ALL user details to Goibibo<a class="headerlink" href="#send-all-user-details-to-goibibo" title="Permalink to this headline">¶</a></h2>
+<p>We recommend this approach as it allows for the end-user to be logged into our
+system with minimal delay. You can visualize the flow with the following
+diagram,</p>
+<div><img height="404" src="_images/seqdiag-7e8b851d7cf3fba2375d9f5e5f30fcff6eae1bd7.png" width="448" /></div><p>Here are the API details,</p>
+<div class="admonition note">
+<p class="first admonition-title">Note</p>
+<p class="last">Please replace <code class="docutils literal"><span class="pre">example_bank</span></code> with your organization-code</p>
+</div>
+<dl class="get">
+<dt>
+<code class="descname">GET </code><code class="descname">http://pp.goibibobusiness.com/b2b_partner/example_bank/start_login/</code></dt>
+<dd><table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name" colspan="2">Query Parameters:</th></tr>
+<tr class="field-odd field"><td>&nbsp;</td><td class="field-body"><ul class="first last simple">
+<li><strong>user_id</strong> &#8211; A string to uniquely identify a user</li>
+<li><strong>timestamp</strong> &#8211; Time request is made, format: YYYY-MM-DD HH:MM</li>
+<li><strong>token</strong> &#8211; The Token number to use when calling Partner APIs</li>
+<li><strong>checksum</strong> &#8211; CRC32 value to check integrity of request</li>
+<li><strong>version</strong> &#8211; A string &#8216;1.0&#8217; (without quotes)</li>
+<li><strong>f_name</strong> &#8211; First name of end-user</li>
+<li><strong>m_name</strong> &#8211; Middle name of end-user</li>
+<li><strong>l_name</strong> &#8211; Last name of end-user</li>
+<li><strong>mobile</strong> &#8211; Confirmed mobile number of end-user</li>
+<li><strong>email</strong> &#8211; Confirmed email-id of end-user</li>
+<li><strong>vertical</strong> &#8211; (optional) default value is &#8216;flight&#8217;</li>
+</ul>
+</td>
+</tr>
+</tbody>
+</table>
+<p>You can pass <code class="docutils literal"><span class="pre">flight</span></code> , <code class="docutils literal"><span class="pre">hotels</span></code> or <code class="docutils literal"><span class="pre">bus</span></code> as vertical to directly
+login to the corresponding page.</p>
+<p>If this end-point is issued a GET request without any parameters on a
+production system, an error page will be returned. On the pre-production
+environment, a simple HTML form will be returned which can be used by
+a developer with Chrome browser for debugging/testing.</p>
+<p>The checksum can be generated by passing a <strong>single string</strong> to a CRC32
+function. This input string can be created by appending the following
+data,</p>
+<p>&#8216;example_bank&#8217; + user_id + timestamp + token + LOGIN_KEY</p>
+</dd></dl>
+
+<div class="admonition note">
+<p class="first admonition-title">Note</p>
+<p class="last">Please contact us for LOGIN_KEY</p>
+</div>
+</div>
+<div class="section" id="request-goibibo-to-fetch-user-details">
+<h2>Request Goibibo to fetch user details<a class="headerlink" href="#request-goibibo-to-fetch-user-details" title="Permalink to this headline">¶</a></h2>
+<p>We do NOT recommend this approach, as it can significantly increase the time
+taken for the end-user to get logged in. Here is a visualization of the
+control flow,</p>
+<div><img height="706" src="_images/seqdiag-4b27c7e6b5567502da87adbf9bdd4eab30b0b965.png" width="640" /></div><p>When a valid request comes in, we immediately show a temporary landing page to
+the end-user. This gives the end-user a visual assurance that the site is
+active (and hasn&#8217;t crashed). After the landing page loads, our server will
+request for user details from the B2B-Partner API. Once the details are
+verified, we return a logged-in session back to WebView on end-user&#8217;s mobile
+device.</p>
+<p>In our experience without the temporary landing page, some users would be
+stuck seeing a blank page while we verified them. Depending on network
+conditions, the verification would take too long and many of them would quit
+the application without making any travel purchases.</p>
+<p>To initiate the above flow here is the API which has to be called,</p>
+<div class="admonition note">
+<p class="first admonition-title">Note</p>
+<p class="last">Please replace <code class="docutils literal"><span class="pre">example_bank</span></code> with your organization-code</p>
+</div>
+<dl class="get">
+<dt>
+<code class="descname">GET </code><code class="descname">http://pp.goibibobusiness.com/b2b_partner/example_bank/start/</code></dt>
+<dd><table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name" colspan="2">Query Parameters:</th></tr>
+<tr class="field-odd field"><td>&nbsp;</td><td class="field-body"><ul class="first last simple">
+<li><strong>token</strong> &#8211; The Token number to use when calling Partner APIs</li>
+<li><strong>version</strong> &#8211; A string &#8216;1.0&#8217; (without quotes)</li>
+<li><strong>vertical</strong> &#8211; (optional) default value is &#8216;flight&#8217;</li>
+</ul>
+</td>
+</tr>
+</tbody>
+</table>
+<p>You can pass <code class="docutils literal"><span class="pre">flight</span></code> , <code class="docutils literal"><span class="pre">hotels</span></code> or <code class="docutils literal"><span class="pre">bus</span></code> as vertical to directly
+login to the corresponding page.</p>
+<p>B2B-Partner is expected to provide us user-details API.</p>
+</dd></dl>
+
+</div>
+</div>
+
+
+          </div>
+        </div>
+      </div>
+      <div class="sphinxsidebar" role="navigation" aria-label="main navigation">
+        <div class="sphinxsidebarwrapper">
+            <p class="logo"><a href="index.html">
+              <img class="logo" src="_static/goLogo.png" alt="Logo"/>
+            </a></p>
+  <h3><a href="index.html">Table Of Contents</a></h3>
+  <ul>
+<li><a class="reference internal" href="#">Initial Login</a><ul>
+<li><a class="reference internal" href="#send-all-user-details-to-goibibo">Send ALL user details to Goibibo</a></li>
+<li><a class="reference internal" href="#request-goibibo-to-fetch-user-details">Request Goibibo to fetch user details</a></li>
+</ul>
+</li>
+</ul>
+
+  <h4>Previous topic</h4>
+  <p class="topless"><a href="index.html"
+                        title="previous chapter">GoibiboBusiness WebView Integration documentation</a></p>
+  <div role="note" aria-label="source link">
+    <h3>This Page</h3>
+    <ul class="this-page-menu">
+      <li><a href="_sources/initial_login.txt"
+            rel="nofollow">Show Source</a></li>
+    </ul>
+   </div>
+<div id="searchbox" style="display: none" role="search">
+  <h3>Quick search</h3>
+    <form class="search" action="search.html" method="get">
+      <div><input type="text" name="q" /></div>
+      <div><input type="submit" value="Go" /></div>
+      <input type="hidden" name="check_keywords" value="yes" />
+      <input type="hidden" name="area" value="default" />
+    </form>
+</div>
+<script type="text/javascript">$('#searchbox').show(0);</script>
+        </div>
+      </div>
+      <div class="clearer"></div>
+    </div>
+    <div class="related" role="navigation" aria-label="related navigation">
+      <h3>Navigation</h3>
+      <ul>
+        <li class="right" style="margin-right: 10px">
+          <a href="genindex.html" title="General Index"
+             >index</a></li>
+        <li class="right" >
+          <a href="index.html" title="GoibiboBusiness WebView Integration documentation"
+             >previous</a> |</li>
+        <li class="nav-item nav-item-0"><a href="index.html">GoibiboBusiness WebView Integration 0.1.0 documentation</a> &#187;</li> 
+      </ul>
+    </div>
+    <div class="footer" role="contentinfo">
+        &#169; Copyright 2016, ibibogroup All rights reserved.
+      Created using <a href="http://sphinx-doc.org/">Sphinx</a> 1.4.6.
+    </div>
+  </body>
+</html>
