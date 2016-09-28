@@ -67,6 +67,7 @@ Integration Options
    :maxdepth: 2
 
    initial_login
+   pay_customization
 
 
 Indices and tables
