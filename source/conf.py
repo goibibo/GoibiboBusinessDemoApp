@@ -1,7 +1,7 @@
 #!/usr/bin/env python3
 # -*- coding: utf-8 -*-
 #
-# GoibiboBusiness WebView Integration Docs documentation build configuration file, created by
+# GoibiboBusiness WebView Integration documentation build configuration file, created by
 # sphinx-quickstart on Wed Sep 28 12:35:06 2016.
 #
 # This file is execfile()d with the current directory set to its
@@ -53,7 +53,7 @@ source_suffix = '.rst'
 master_doc = 'index'
 
 # General information about the project.
-project = 'GoibiboBusiness WebView Integration Docs'
+project = 'GoibiboBusiness WebView Integration'
 copyright = '2016, AbrahamV'
 author = 'AbrahamV'
 
@@ -138,7 +138,7 @@ html_theme = 'alabaster'
 # The name for this set of Sphinx documents.
 # "<project> v<release> documentation" by default.
 #
-# html_title = 'GoibiboBusiness WebView Integration Docs v0.1.0'
+# html_title = 'GoibiboBusiness WebView Integration v0.1.0'
 
 # A shorter title for the navigation bar.  Default is the same as html_title.
 #
@@ -238,7 +238,7 @@ html_static_path = ['_static']
 # html_search_scorer = 'scorer.js'
 
 # Output file base name for HTML help builder.
-htmlhelp_basename = 'GoibiboBusinessWebViewIntegrationDocsdoc'
+htmlhelp_basename = 'GoibiboBusinessWebViewIntegrationdoc'
 
 # -- Options for LaTeX output ---------------------------------------------
 
@@ -264,7 +264,7 @@ latex_elements = {
 # (source start file, target name, title,
 #  author, documentclass [howto, manual, or own class]).
 latex_documents = [
-    (master_doc, 'GoibiboBusinessWebViewIntegrationDocs.tex', 'GoibiboBusiness WebView Integration Docs Documentation',
+    (master_doc, 'GoibiboBusinessWebViewIntegration.tex', 'GoibiboBusiness WebView Integration Documentation',
      'AbrahamV', 'manual'),
 ]
 
@@ -306,7 +306,7 @@ latex_documents = [
 # One entry per manual page. List of tuples
 # (source start file, name, description, authors, manual section).
 man_pages = [
-    (master_doc, 'goibibobusinesswebviewintegrationdocs', 'GoibiboBusiness WebView Integration Docs Documentation',
+    (master_doc, 'goibibobusinesswebviewintegration', 'GoibiboBusiness WebView Integration Documentation',
      [author], 1)
 ]
 
@@ -321,8 +321,8 @@ man_pages = [
 # (source start file, target name, title, author,
 #  dir menu entry, description, category)
 texinfo_documents = [
-    (master_doc, 'GoibiboBusinessWebViewIntegrationDocs', 'GoibiboBusiness WebView Integration Docs Documentation',
-     author, 'GoibiboBusinessWebViewIntegrationDocs', 'One line description of project.',
+    (master_doc, 'GoibiboBusinessWebViewIntegration', 'GoibiboBusiness WebView Integration Documentation',
+     author, 'GoibiboBusinessWebViewIntegration', 'One line description of project.',
      'Miscellaneous'),
 ]
 
