@@ -1,0 +1,268 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+  "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+
+
+<html xmlns="http://www.w3.org/1999/xhtml">
+  <head>
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+    
+    <title>Payment Customization &#8212; GoibiboBusiness WebView Integration 1.0 documentation</title>
+    
+    <link rel="stylesheet" href="_static/nature.css" type="text/css" />
+    <link rel="stylesheet" href="_static/pygments.css" type="text/css" />
+    
+    <script type="text/javascript">
+      var DOCUMENTATION_OPTIONS = {
+        URL_ROOT:    './',
+        VERSION:     '1.0',
+        COLLAPSE_INDEX: false,
+        FILE_SUFFIX: '.html',
+        HAS_SOURCE:  true
+      };
+    </script>
+    <script type="text/javascript" src="_static/jquery.js"></script>
+    <script type="text/javascript" src="_static/underscore.js"></script>
+    <script type="text/javascript" src="_static/doctools.js"></script>
+    <link rel="top" title="GoibiboBusiness WebView Integration 1.0 documentation" href="index.html" />
+    <link rel="prev" title="Initial Login" href="initial_login.html" /> 
+  </head>
+  <body role="document">
+    <div class="related" role="navigation" aria-label="related navigation">
+      <h3>Navigation</h3>
+      <ul>
+        <li class="right" style="margin-right: 10px">
+          <a href="initial_login.html" title="Initial Login"
+             accesskey="P">previous</a></li>
+        <li class="nav-item nav-item-0"><a href="index.html">GoibiboBusiness WebView Integration 1.0 documentation</a> &#187;</li> 
+      </ul>
+    </div>  
+
+    <div class="document">
+      <div class="documentwrapper">
+        <div class="bodywrapper">
+          <div class="body" role="main">
+            
+  <div class="section" id="payment-customization">
+<h1>Payment Customization<a class="headerlink" href="#payment-customization" title="Permalink to this headline">¶</a></h1>
+<p>From an end-user&#8217;s point-of-view, when they click the &#8216;Make Payment&#8217; button
+after finalizing a travel option, they expect to be taken to a screen which
+gives them the option to pay. By default this will be the same, secure page
+that is seen on <a class="reference external" href="https://www.goibibo.com/">https://www.goibibo.com/</a> . After payment is made, end-users
+will expect to see details of their upcoming travel purchase.</p>
+<p>In some cases, end-users might have accounts with our B2B-Partner which they
+would like to pay from instead. To accomodate this, we provide the following
+customization options,</p>
+<div class="admonition note">
+<p class="first admonition-title">Note</p>
+<p class="last">Please use <code class="docutils literal"><span class="pre">pp.goibibobusiness.com</span></code> for development/testing purposes and
+<code class="docutils literal"><span class="pre">www.goibibobusiness.com</span></code> in the production environment.</p>
+</div>
+<div class="section" id="goibibo-displays-payment-screens">
+<h2>Goibibo displays payment screens<a class="headerlink" href="#goibibo-displays-payment-screens" title="Permalink to this headline">¶</a></h2>
+<p>We recommend this approach as it keeps the end-user within the same WebView -
+reducing the chances of a man-in-the-middle attack. Also, since payments are
+conducted via server-to-server interactions, it minimizes the risk of fraud.
+The below figure visualizes this flow,</p>
+<div><img height="1406" src="_images/seqdiag-af2bb40f7e0ee64caa399e39b63fece049e377fd.png" width="640" /></div><p>To make use of the above flow, Goibibo needs corresponding APIs to be
+available from our B2B-Partner.</p>
+<div class="section" id="request-account-details-of-user">
+<h3>Request account details of user<a class="headerlink" href="#request-account-details-of-user" title="Permalink to this headline">¶</a></h3>
+<p>This is an API which should be implemented by our B2B-Partner. It is to be a
+server-to-server call which will allow Goibibo to transmit <code class="docutils literal"><span class="pre">user_id</span></code> ,
+<code class="docutils literal"><span class="pre">token</span></code> . The API should return details about user&#8217;s account balance which
+Goibibo can show to end-user.</p>
+</div>
+<div class="section" id="send-otp-to-user">
+<h3>Send OTP to user<a class="headerlink" href="#send-otp-to-user" title="Permalink to this headline">¶</a></h3>
+<p>This is an API which should be implemented by our B2B-Partner. It is to be a
+server-to-server call which will allow Goibibo to transmit <code class="docutils literal"><span class="pre">user_id</span></code> ,
+<code class="docutils literal"><span class="pre">token</span></code> and <code class="docutils literal"><span class="pre">goibibo_txnid</span></code> (the Goibibo-specific transaction ID). The API
+should return <code class="docutils literal"><span class="pre">success</span></code> or <code class="docutils literal"><span class="pre">true</span></code> if an OTP message was transmitted to
+end-user. Otherwise, it should return <code class="docutils literal"><span class="pre">false</span></code> or <code class="docutils literal"><span class="pre">failed</span></code>.</p>
+</div>
+<div class="section" id="deduct-funds-from-user-s-account">
+<h3>Deduct funds from user&#8217;s account<a class="headerlink" href="#deduct-funds-from-user-s-account" title="Permalink to this headline">¶</a></h3>
+<p>This is an API which should be implemented by our B2B-Partner. It is to be a
+server-to-server call which will allow Goibibo to transmit <code class="docutils literal"><span class="pre">user_id</span></code> ,
+<code class="docutils literal"><span class="pre">token</span></code> , <code class="docutils literal"><span class="pre">goibibo_txnid</span></code> (the Goibibo-specific transaction ID) ,
+<code class="docutils literal"><span class="pre">amount</span></code> (price to deduct) and <code class="docutils literal"><span class="pre">otp_message</span></code> (OTP sent to end-user,
+if needed). The API should return <code class="docutils literal"><span class="pre">ref_num</span></code> (Partner specific payment ID),
+<code class="docutils literal"><span class="pre">amount</span></code> (amount actually deducted from end-user&#8217;s account), <code class="docutils literal"><span class="pre">pay_status</span></code>
+(status of payment - was it success or failure?) and <code class="docutils literal"><span class="pre">checksum</span></code> (To verify
+integrity of message)</p>
+</div>
+</div>
+<div class="section" id="b2b-partner-displays-payment-screens">
+<h2>B2B-Partner displays payment screens<a class="headerlink" href="#b2b-partner-displays-payment-screens" title="Permalink to this headline">¶</a></h2>
+<p>We do not encourage this mechanism, since it exposes the risk of a man-in-the-middle
+attack as well as to increase the delay between booking confirmation. However,
+if a B2B-Partner is insistent on this approach here is a visualization of the
+flow,</p>
+<div><img height="1204" src="_images/seqdiag-0bb3f7ce9cd5d8b3720430ec85814ca4c4b32474.png" width="832" /></div><p>Here are details of the APIs that need to be implemented for the above flow
+to work,</p>
+<div class="section" id="id1">
+<h3>Deduct funds from user&#8217;s account<a class="headerlink" href="#id1" title="Permalink to this headline">¶</a></h3>
+<div class="admonition note">
+<p class="first admonition-title">Note</p>
+<p class="last">Please replace <code class="docutils literal"><span class="pre">example_bank</span></code> with your organization-code</p>
+</div>
+<dl class="get">
+<dt>
+<code class="descname">GET </code><code class="descname">http://pp.goibibobusiness.com/b2b_partner/example_bank/payment_external_process/</code></dt>
+<dd><table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name" colspan="2">Query Parameters:</th></tr>
+<tr class="field-odd field"><td>&nbsp;</td><td class="field-body"><ul class="first last simple">
+<li><strong>user_id</strong> &#8211; A string to uniquely identify a user</li>
+<li><strong>token</strong> &#8211; The Token number to use when calling Partner APIs</li>
+<li><strong>goibibo_txnid</strong> &#8211; Goibibo-specific transaction ID for selected trip</li>
+<li><strong>amount</strong> &#8211; Price to deduct from user&#8217;s account (might have decimal component eg: Rs 80.73/-)</li>
+<li><strong>timestamp</strong> &#8211; Time request is made, format: YYYY-MM-DD HH:MM:SS</li>
+<li><strong>checksum</strong> &#8211; SHA512 value to check integrity of request</li>
+</ul>
+</td>
+</tr>
+</tbody>
+</table>
+<p>The Goibibo webapp will make a GET request to this end-point (NOTE: if
+partner wishes, we can change the URL). It is expected that instead of
+accessing a web-service, the mobile app will intercept this call and take
+over control flow till payment is processed.</p>
+<p>The checksum is generated by passing a <strong>single string</strong> to a SHA512
+function. This input string is created by appending the following data,</p>
+<p>user_id + token + goibibo_txnid + amount + timestamp + PAYMENT_KEY</p>
+</dd></dl>
+
+<div class="admonition note">
+<p class="first admonition-title">Note</p>
+<p class="last">Please contact us for PAYMENT_KEY</p>
+</div>
+</div>
+<div class="section" id="return-transaction-details-to-goibibo">
+<h3>Return Transaction details to Goibibo<a class="headerlink" href="#return-transaction-details-to-goibibo" title="Permalink to this headline">¶</a></h3>
+<div class="admonition note">
+<p class="first admonition-title">Note</p>
+<p class="last">Please replace <code class="docutils literal"><span class="pre">example_bank</span></code> with your organization-code</p>
+</div>
+<dl class="post">
+<dt>
+<code class="descname">POST </code><code class="descname">http://pp.goibibobusiness.com/b2b_partner/example_bank/payment_external_complete_partner_side/</code></dt>
+<dd><table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name" colspan="2">Query Parameters:</th></tr>
+<tr class="field-odd field"><td>&nbsp;</td><td class="field-body"><ul class="first last simple">
+<li><strong>user_id</strong> &#8211; A string to uniquely identify a user</li>
+<li><strong>token</strong> &#8211; The Token number to use when calling Partner APIs</li>
+<li><strong>goibibo_txnid</strong> &#8211; Goibibo-specific transaction ID for selected trip</li>
+<li><strong>amount</strong> &#8211; Amount deducted from end-user&#8217;s account</li>
+<li><strong>timestamp</strong> &#8211; Time request is made, format: YYYY-MM-DD HH:MM:SS</li>
+<li><strong>ref_num</strong> &#8211; Partner-specific payment ID</li>
+<li><strong>checksum</strong> &#8211; SHA512 value to check integrity of request</li>
+<li><strong>pay_status</strong> &#8211; A string to indicate status of transaction</li>
+<li><strong>comment</strong> &#8211; A string which indicates cause of error (if needed)</li>
+</ul>
+</td>
+</tr>
+</tbody>
+</table>
+<p>This is the API call to be made from mobile WebView to Goibibo after
+payment has been processed by B2B-Partner. If it was a success,
+<code class="docutils literal"><span class="pre">pay_status</span></code> should be &#8216;<code class="docutils literal"><span class="pre">success</span></code>&#8216;. Any other string is assumed to
+indicate failure. Also, if the transaction failed, <code class="docutils literal"><span class="pre">amount</span></code> should be
+&#8216;<code class="docutils literal"><span class="pre">0.0</span></code>&#8216; and <code class="docutils literal"><span class="pre">comment</span></code> should be a string explaining cause of failure.
+On successful payment, <code class="docutils literal"><span class="pre">amount</span></code> should be the same as the value
+requested (the API does not support partial payments).</p>
+<p>The checksum is generated by passing a <strong>single string</strong> to a SHA512
+function. This input string is created by appending the following data,</p>
+<p>user_id + token + goibibo_txnid + amount + timestamp + ref_num + PAYMENT_KEY</p>
+</dd></dl>
+
+<div class="admonition note">
+<p class="first admonition-title">Note</p>
+<p class="last">Please contact us for PAYMENT_KEY</p>
+</div>
+</div>
+<div class="section" id="transaction-status-api-for-goibibo">
+<h3>Transaction Status API for Goibibo<a class="headerlink" href="#transaction-status-api-for-goibibo" title="Permalink to this headline">¶</a></h3>
+<p>This is an API which should be implemented by our B2B-Partner. It is to be a
+server-to-server call which will allow Goibibo to transmit <code class="docutils literal"><span class="pre">goibibo_txnid</span></code>
+(the Goibibo-specific transaction ID) and <code class="docutils literal"><span class="pre">ref_num</span></code> (Partner specific
+payment ID). The API should return <code class="docutils literal"><span class="pre">pay_status</span></code> (Indicates if payment was
+success or not), <code class="docutils literal"><span class="pre">amount</span></code> (Amount which was deducted from end-user&#8217;s
+account), <code class="docutils literal"><span class="pre">comment</span></code> (Reason for payment failure) and <code class="docutils literal"><span class="pre">checksum</span></code> (To verify
+integrity of message).</p>
+</div>
+</div>
+</div>
+
+
+          </div>
+        </div>
+      </div>
+      <div class="sphinxsidebar" role="navigation" aria-label="main navigation">
+        <div class="sphinxsidebarwrapper">
+            <p class="logo"><a href="index.html">
+              <img class="logo" src="_static/goLogo.png" alt="Logo"/>
+            </a></p>
+  <h3><a href="index.html">Table Of Contents</a></h3>
+  <ul>
+<li><a class="reference internal" href="#">Payment Customization</a><ul>
+<li><a class="reference internal" href="#goibibo-displays-payment-screens">Goibibo displays payment screens</a><ul>
+<li><a class="reference internal" href="#request-account-details-of-user">Request account details of user</a></li>
+<li><a class="reference internal" href="#send-otp-to-user">Send OTP to user</a></li>
+<li><a class="reference internal" href="#deduct-funds-from-user-s-account">Deduct funds from user&#8217;s account</a></li>
+</ul>
+</li>
+<li><a class="reference internal" href="#b2b-partner-displays-payment-screens">B2B-Partner displays payment screens</a><ul>
+<li><a class="reference internal" href="#id1">Deduct funds from user&#8217;s account</a></li>
+<li><a class="reference internal" href="#return-transaction-details-to-goibibo">Return Transaction details to Goibibo</a></li>
+<li><a class="reference internal" href="#transaction-status-api-for-goibibo">Transaction Status API for Goibibo</a></li>
+</ul>
+</li>
+</ul>
+</li>
+</ul>
+
+  <h4>Previous topic</h4>
+  <p class="topless"><a href="initial_login.html"
+                        title="previous chapter">Initial Login</a></p>
+  <div role="note" aria-label="source link">
+    <h3>This Page</h3>
+    <ul class="this-page-menu">
+      <li><a href="_sources/pay_customization.txt"
+            rel="nofollow">Show Source</a></li>
+    </ul>
+   </div>
+<div id="searchbox" style="display: none" role="search">
+  <h3>Quick search</h3>
+    <form class="search" action="search.html" method="get">
+      <div><input type="text" name="q" /></div>
+      <div><input type="submit" value="Go" /></div>
+      <input type="hidden" name="check_keywords" value="yes" />
+      <input type="hidden" name="area" value="default" />
+    </form>
+</div>
+<script type="text/javascript">$('#searchbox').show(0);</script>
+        </div>
+      </div>
+      <div class="clearer"></div>
+    </div>
+    <div class="related" role="navigation" aria-label="related navigation">
+      <h3>Navigation</h3>
+      <ul>
+        <li class="right" style="margin-right: 10px">
+          <a href="initial_login.html" title="Initial Login"
+             >previous</a></li>
+        <li class="nav-item nav-item-0"><a href="index.html">GoibiboBusiness WebView Integration 1.0 documentation</a> &#187;</li> 
+      </ul>
+    </div>
+    <div class="footer" role="contentinfo">
+        &#169; Copyright 2016, ibibogroup All rights reserved.
+      Created using <a href="http://sphinx-doc.org/">Sphinx</a> 1.4.6.
+    </div>
+  </body>
+</html>

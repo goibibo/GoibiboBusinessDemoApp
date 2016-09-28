@@ -6,7 +6,7 @@
   <head>
     <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
     
-    <title>Initial Login &#8212; GoibiboBusiness WebView Integration 0.1.0 documentation</title>
+    <title>Initial Login &#8212; GoibiboBusiness WebView Integration 1.0 documentation</title>
     
     <link rel="stylesheet" href="_static/nature.css" type="text/css" />
     <link rel="stylesheet" href="_static/pygments.css" type="text/css" />
@@ -14,7 +14,7 @@
     <script type="text/javascript">
       var DOCUMENTATION_OPTIONS = {
         URL_ROOT:    './',
-        VERSION:     '0.1.0',
+        VERSION:     '1.0',
         COLLAPSE_INDEX: false,
         FILE_SUFFIX: '.html',
         HAS_SOURCE:  true
@@ -23,7 +23,8 @@
     <script type="text/javascript" src="_static/jquery.js"></script>
     <script type="text/javascript" src="_static/underscore.js"></script>
     <script type="text/javascript" src="_static/doctools.js"></script>
-    <link rel="top" title="GoibiboBusiness WebView Integration 0.1.0 documentation" href="index.html" />
+    <link rel="top" title="GoibiboBusiness WebView Integration 1.0 documentation" href="index.html" />
+    <link rel="next" title="Payment Customization" href="pay_customization.html" />
     <link rel="prev" title="GoibiboBusiness WebView Integration documentation" href="index.html" /> 
   </head>
   <body role="document">
@@ -31,12 +32,12 @@
       <h3>Navigation</h3>
       <ul>
         <li class="right" style="margin-right: 10px">
-          <a href="genindex.html" title="General Index"
-             accesskey="I">index</a></li>
+          <a href="pay_customization.html" title="Payment Customization"
+             accesskey="N">next</a></li>
         <li class="right" >
           <a href="index.html" title="GoibiboBusiness WebView Integration documentation"
              accesskey="P">previous</a> |</li>
-        <li class="nav-item nav-item-0"><a href="index.html">GoibiboBusiness WebView Integration 0.1.0 documentation</a> &#187;</li> 
+        <li class="nav-item nav-item-0"><a href="index.html">GoibiboBusiness WebView Integration 1.0 documentation</a> &#187;</li> 
       </ul>
     </div>  
 
@@ -68,7 +69,7 @@ as follows,</p>
 <p>We recommend this approach as it allows for the end-user to be logged into our
 system with minimal delay. You can visualize the flow with the following
 diagram,</p>
-<div><img height="404" src="_images/seqdiag-7e8b851d7cf3fba2375d9f5e5f30fcff6eae1bd7.png" width="448" /></div><p>Here are the API details,</p>
+<div><img height="404" src="_images/seqdiag-7e1fa539f3ac20d9f187457b011796b21c49c470.png" width="448" /></div><p>Here are the API details,</p>
 <div class="admonition note">
 <p class="first admonition-title">Note</p>
 <p class="last">Please replace <code class="docutils literal"><span class="pre">example_bank</span></code> with your organization-code</p>
@@ -120,7 +121,7 @@ data,</p>
 <p>We do NOT recommend this approach, as it can significantly increase the time
 taken for the end-user to get logged in. Here is a visualization of the
 control flow,</p>
-<div><img height="706" src="_images/seqdiag-4b27c7e6b5567502da87adbf9bdd4eab30b0b965.png" width="640" /></div><p>When a valid request comes in, we immediately show a temporary landing page to
+<div><img height="706" src="_images/seqdiag-213d4a790962bb309e21e4b697fda79528f4e026.png" width="640" /></div><p>When a valid request comes in, we immediately show a temporary landing page to
 the end-user. This gives the end-user a visual assurance that the site is
 active (and hasn&#8217;t crashed). After the landing page loads, our server will
 request for user details from the B2B-Partner API. Once the details are
@@ -181,6 +182,9 @@ login to the corresponding page.</p>
   <h4>Previous topic</h4>
   <p class="topless"><a href="index.html"
                         title="previous chapter">GoibiboBusiness WebView Integration documentation</a></p>
+  <h4>Next topic</h4>
+  <p class="topless"><a href="pay_customization.html"
+                        title="next chapter">Payment Customization</a></p>
   <div role="note" aria-label="source link">
     <h3>This Page</h3>
     <ul class="this-page-menu">
@@ -206,12 +210,12 @@ login to the corresponding page.</p>
       <h3>Navigation</h3>
       <ul>
         <li class="right" style="margin-right: 10px">
-          <a href="genindex.html" title="General Index"
-             >index</a></li>
+          <a href="pay_customization.html" title="Payment Customization"
+             >next</a></li>
         <li class="right" >
           <a href="index.html" title="GoibiboBusiness WebView Integration documentation"
              >previous</a> |</li>
-        <li class="nav-item nav-item-0"><a href="index.html">GoibiboBusiness WebView Integration 0.1.0 documentation</a> &#187;</li> 
+        <li class="nav-item nav-item-0"><a href="index.html">GoibiboBusiness WebView Integration 1.0 documentation</a> &#187;</li> 
       </ul>
     </div>
     <div class="footer" role="contentinfo">
