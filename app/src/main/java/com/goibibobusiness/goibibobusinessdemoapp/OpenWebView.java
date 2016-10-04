@@ -1,14 +1,19 @@
 package com.goibibobusiness.goibibobusinessdemoapp;
 
+import android.annotation.TargetApi;
 import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
+import android.net.Uri;
+import android.os.Build;
 import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
+import android.util.Log;
 import android.webkit.JavascriptInterface;
 import android.webkit.JsResult;
 import android.webkit.WebChromeClient;
+import android.webkit.WebResourceRequest;
 import android.webkit.WebSettings;
 import android.webkit.WebView;
 import android.webkit.WebViewClient;
@@ -30,7 +35,7 @@ public class OpenWebView extends AppCompatActivity {
         String web_url = intent.getStringExtra(WEBVIEW_URL);
 
         myWebView = (WebView) findViewById(R.id.webview);
-        myWebView.setWebViewClient(new WebViewClient());
+        myWebView.setWebViewClient(new MyWebViewClient());
         myWebView.setWebChromeClient(new MyWebChromeClient());
 
         // Enabling Javascript
@@ -90,7 +95,7 @@ public class OpenWebView extends AppCompatActivity {
 
     // Private class to handle JS alert windows
     // To edit the default title text which comes with an alert
-    private class MyWebChromeClient extends android.webkit.WebChromeClient {
+    private class MyWebChromeClient extends WebChromeClient {
 
         @Override
         public boolean onJsAlert(WebView view, String url, String message, final JsResult result) {
@@ -107,5 +112,47 @@ public class OpenWebView extends AppCompatActivity {
             result.confirm();
             return true;
         }
+    }
+
+    // Private class to handle URL interception
+    // ref: http://stackoverflow.com/a/38484061/198660
+    private class MyWebViewClient extends WebViewClient {
+
+        @SuppressWarnings("deprecation")
+        @Override
+        public boolean shouldOverrideUrlLoading(WebView view, String url) {
+            final Uri uri = Uri.parse(url);
+            return handleUri(uri);
+        }
+
+        @TargetApi(Build.VERSION_CODES.N)
+        @Override
+        public boolean shouldOverrideUrlLoading(WebView view, WebResourceRequest request) {
+            final Uri uri = request.getUrl();
+            return handleUri(uri);
+        }
+
+        private boolean handleUri(final Uri uri) {
+            Log.i("goibibobusinessdemoapp", "Uri =" + uri);
+            final String host = uri.getHost();
+            final String scheme = uri.getScheme();
+            Log.i("goibibobusinessdemoapp", "Path =" + uri.getPath());
+            // Based on some condition you need to determine if you are going to load the url
+            // in your web view itself or in a browser.
+            // You can use `host` or `scheme` or any part of the `uri` to decide.
+            if (uri.getPath().toString().equals("/b2b_partner/example_extpay/payment_external_process/")) {
+                // Returning false means that you are going to load this url in the webView itself
+                // http://pp.goibibobusiness.com/b2b_partner/example_extpay/payment_external_process/?user_id=user345&checksum=cc299c0b0c6ec996ca1987ba72074387e0fa30b9b8714663ba4467ab2e9fd1a845f8b9aa8d0063af23357b43808cbe38b566ea254e726f3b21b0886be9933d85&amount=2843&token=0000000&timestamp=2016-10-04+15%3A37%3A55&goibibo_txnid=GOFLDEXP_EXTPAY3b0871475575671
+                return false;
+            } else {
+                return false;
+                // Returning true means that you need to handle what to do with the url
+                // e.g. open web page in a Browser
+//                final Intent intent = new Intent(Intent.ACTION_VIEW, uri);
+//                startActivity(intent);
+//                return true;
+            }
+        }
+
     }
 }
